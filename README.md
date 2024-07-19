@@ -19,7 +19,7 @@ This is a desktop application for text compression using Huffman, LZW, and Defla
 
 3. Run the application:
     ```bash
-    python main.py
+    python file_compression.py
     ```
 
 ### Using the Executable (Optional)
