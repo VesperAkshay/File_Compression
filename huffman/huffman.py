@@ -1,4 +1,3 @@
-# huffman/huffman.py
 import heapq
 import os
 
@@ -90,10 +89,9 @@ class HuffmanCoding:
             array.append(int(byte, 2))
         return array
 
-    def compress(self):
+    def compress(self, output_path='compressed_file.bin'):
         print("Compression processing")
-        outputPath = 'compressed_file.bin'
-        with open(self.path, 'r+') as file, open(outputPath, 'wb') as output:
+        with open(self.path, 'r+') as file, open(output_path, 'wb') as output:
             text = file.read().rstrip()
             encodedText = self.__encode(text)
             paddedText = self.__build_padded_text(encodedText)
@@ -101,7 +99,7 @@ class HuffmanCoding:
             finalBytes = bytes(bytesArray)
             output.write(finalBytes)
         print('Compressed successfully')
-        return outputPath
+        return output_path
 
     def __remove_padding_from_text(self, text):
         padded_info = text[:8]
@@ -110,8 +108,7 @@ class HuffmanCoding:
         text = text[:-1 * padding_value]
         return text
 
-    def decompress(self, input_path):
-        output_path = 'decompressed_file.txt'
+    def decompress(self, input_path, output_path='decompressed_file.txt'):
         with open(input_path, 'rb') as file, open(output_path, 'w') as output:
             bit_string = ''
             byte = file.read(1)

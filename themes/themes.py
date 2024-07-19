@@ -1,4 +1,22 @@
 # themes.py
+def apply_theme(app, theme):
+    if theme == "Light":
+        app.setStyleSheet(lightStyle())
+    elif theme == "Dark":
+        app.setStyleSheet(darkStyle())
+    elif theme == "Retro":
+        app.setStyleSheet(retroStyle())
+    elif theme == "Space":
+        app.setStyleSheet(spaceStyle())
+    elif theme == "Dracula":
+        app.setStyleSheet(draculaStyle())
+    elif theme == "Horror":
+        app.setStyleSheet(horrorStyle())
+    elif theme == "Innovative":
+        app.setStyleSheet(innovativeTheme())
+    else:
+        app.setStyleSheet(defaultStyle())
+
 
 def defaultStyle():
     return """
@@ -231,5 +249,91 @@ def draculaStyle():
             font-size: 16px;
             font-weight: bold;
             color: #f8f8f2;
+        }
+    """
+
+def horrorStyle():
+    return """
+        QWidget {
+            background-color: #000000; /* Dark background */
+        }
+        QTextEdit {
+            background-color: #2f2f2f; /* Dark gray */
+            color: #ff0000; /* Red text */
+            border: 2px solid #800000; /* Dark red */
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        QComboBox {
+            background-color: #2f2f2f; /* Dark gray */
+            color: #ff0000; /* Red text */
+            border: 2px solid #800000; /* Dark red */
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        QPushButton {
+            background-color: #800000; /* Dark red */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        QPushButton:hover {
+            background-color: #a00000; /* Lighter red on hover */
+        }
+        QLabel {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff0000; /* Red text */
+            font-family: 'Courier New', Courier, monospace;
+        }
+    """
+
+def innovativeTheme():
+    return """
+        QWidget {
+            background-color: #1e1e2f; /* Deep navy blue */
+        }
+        QTextEdit {
+            background-color: #2a2a3c; /* Dark slate gray */
+            color: #f8f8f2; /* Light gray text */
+            border: 2px solid #50fa7b; /* Neon green */
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Fira Code', monospace; /* Modern monospaced font */
+        }
+        QComboBox {
+            background-color: #2a2a3c; /* Dark slate gray */
+            color: #f8f8f2; /* Light gray text */
+            border: 2px solid #50fa7b; /* Neon green */
+            border-radius: 8px;
+            padding: 6px;
+            font-size: 16px;
+            font-family: 'Fira Code', monospace; /* Modern monospaced font */
+        }
+        QPushButton {
+            background-color: #ff79c6; /* Bright pink */
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            font-family: 'Fira Code', monospace; /* Modern monospaced font */
+        }
+        QPushButton:hover {
+            background-color: #ff92d0; /* Lighter pink on hover */
+        }
+        QLabel {
+            font-size: 18px;
+            font-weight: bold;
+            color: #50fa7b; /* Neon green */
+            font-family: 'Fira Code', monospace; /* Modern monospaced font */
         }
     """

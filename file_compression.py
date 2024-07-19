@@ -1,25 +1,65 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QComboBox, QFileDialog, QMenu, QMenuBar)
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QComboBox, QFileDialog, QMenu, QMenuBar, QAction)
 from huffman.huffman import HuffmanCoding
 from lzw.lzw import compress_file as lzw_compress_file, decompress_file as lzw_decompress_file
 from deflate.deflate import compress_file as deflate_compress_file, decompress_file as deflate_decompress_file
-from themes.themes import defaultStyle, darkStyle, lightStyle, retroStyle, draculaStyle, spaceStyle
+from themes.themes import apply_theme
 
-class TextCompressionApp(QMainWindow):
+class TextCompressionApp(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle('Text Compression App')
-        self.resize(600, 400)
-
-        self.centralWidget = QWidget()
-        self.setCentralWidget(self.centralWidget)
+        print("Initializing UI...")
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #f0f0f0;
+            }
+            QTextEdit {
+                background-color: #ffffff;
+                border: 1px solid #dcdcdc;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 14px;
+            }
+            QComboBox {
+                border: 1px solid #dcdcdc;
+                border-radius: 5px;
+                padding: 5px;
+                font-size: 14px;
+            }
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QLabel {
+                font-size: 16px;
+                font-weight: bold;
+            }
+        """)
 
         self.layout = QVBoxLayout()
-        self.centralWidget.setLayout(self.layout)
+        self.layout.setSpacing(20)
+        self.layout.setContentsMargins(20, 20, 20, 20)
+
+        self.menuBar = QMenuBar(self)
+        self.themeMenu = QMenu("Themes", self)
+        self.menuBar.addMenu(self.themeMenu)
+
+        self.themes = ["Light", "Dark", "Retro", "Space", "Dracula", "Horror", "Innovative"]
+        for theme in self.themes:
+            theme_action = QAction(theme, self)
+            theme_action.triggered.connect(lambda checked, t=theme: self.applyTheme(t))
+            self.themeMenu.addAction(theme_action)
+        self.layout.addWidget(self.menuBar)
 
         self.inputText = QTextEdit(self)
         self.inputText.setPlaceholderText("Enter or select text to compress...")
@@ -32,7 +72,7 @@ class TextCompressionApp(QMainWindow):
         self.layout.addWidget(self.algorithmSelector)
 
         self.buttonLayout = QHBoxLayout()
-        self.layout.addLayout(self.buttonLayout)
+        self.buttonLayout.setSpacing(10)
 
         self.selectFileButton = QPushButton('Select File', self)
         self.selectFileButton.clicked.connect(self.selectFile)
@@ -46,6 +86,8 @@ class TextCompressionApp(QMainWindow):
         self.decompressButton.clicked.connect(self.decompressText)
         self.buttonLayout.addWidget(self.decompressButton)
 
+        self.layout.addLayout(self.buttonLayout)
+
         self.outputLabel = QLabel('Output:', self)
         self.layout.addWidget(self.outputLabel)
 
@@ -54,56 +96,11 @@ class TextCompressionApp(QMainWindow):
         self.outputText.setPlaceholderText("The result will be shown here...")
         self.layout.addWidget(self.outputText)
 
-        self.createThemeButton()
+        self.setLayout(self.layout)
+        self.setWindowTitle('Text Compression App')
+        self.resize(600, 400)
 
-        self.setStyleSheet(defaultStyle())
         print("UI initialized successfully.")
-
-    def createThemeButton(self):
-        self.themeButton = QPushButton('Themes', self)
-        self.themeButton.setMenu(self.createThemeMenu())
-        self.layout.addWidget(self.themeButton, alignment=Qt.AlignRight)
-
-    def createThemeMenu(self):
-        menu = QMenu(self)
-        
-        defaultThemeAction = menu.addAction("Default")
-        defaultThemeAction.triggered.connect(self.setDefaultTheme)
-        
-        darkThemeAction = menu.addAction("Dark")
-        darkThemeAction.triggered.connect(self.setDarkTheme)
-        
-        lightThemeAction = menu.addAction("Light")
-        lightThemeAction.triggered.connect(self.setLightTheme)
-
-        retroThemeAction = menu.addAction("Retro")
-        retroThemeAction.triggered.connect(self.setRetroTheme)
-
-        draculaThemeAction = menu.addAction("Dracula")
-        draculaThemeAction.triggered.connect(self.setDraculaTheme)
-
-        spaceThemeAction = menu.addAction("Space")
-        spaceThemeAction.triggered.connect(self.setSpaceTheme)
-        
-        return menu
-
-    def setDefaultTheme(self):
-        self.setStyleSheet(defaultStyle())
-
-    def setDarkTheme(self):
-        self.setStyleSheet(darkStyle())
-
-    def setLightTheme(self):
-        self.setStyleSheet(lightStyle())
-
-    def setRetroTheme(self):
-        self.setStyleSheet(retroStyle())
-
-    def setDraculaTheme(self):
-        self.setStyleSheet(draculaStyle())
-
-    def setSpaceTheme(self):
-        self.setStyleSheet(spaceStyle())
 
     def selectFile(self):
         options = QFileDialog.Options()
@@ -138,7 +135,7 @@ class TextCompressionApp(QMainWindow):
         if algorithm == 'Huffman':
             print("Using Huffman algorithm.")
             huffman = HuffmanCoding(input_path)
-            huffman.compress()
+            huffman.compress(output_path)
         elif algorithm == 'LZW':
             print("Using LZW algorithm.")
             lzw_compress_file(input_path, output_path)
@@ -164,7 +161,7 @@ class TextCompressionApp(QMainWindow):
         if algorithm == 'Huffman':
             print("Using Huffman algorithm.")
             huffman = HuffmanCoding(input_path)
-            huffman.decompress(input_path)
+            huffman.decompress(input_path, output_path)
         elif algorithm == 'LZW':
             print("Using LZW algorithm.")
             lzw_decompress_file(input_path, output_path)
@@ -176,6 +173,9 @@ class TextCompressionApp(QMainWindow):
             decompressed_data = f.read()
         self.outputText.setText(decompressed_data)
         print("Text decompressed successfully.")
+
+    def applyTheme(self, theme):
+        apply_theme(self, theme)
 
 if __name__ == '__main__':
     def main():
