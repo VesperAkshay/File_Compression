@@ -1,6 +1,8 @@
 import sys
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QComboBox,
                              QFileDialog)
+from PyQt5.QtGui import QFont, QColor
+from PyQt5.QtCore import Qt
 from huffman.huffman import HuffmanCoding
 from lzw.lzw import compress_file as lzw_compress_file, decompress_file as lzw_decompress_file
 from deflate.deflate import compress_file as deflate_compress_file, decompress_file as deflate_decompress_file
@@ -14,35 +16,40 @@ class TextCompressionApp(QWidget):
         print("Initializing UI...")
         self.setStyleSheet("""
             QWidget {
-                background-color: #f0f0f0;
+                background-color: #f8f9fa;
             }
             QTextEdit {
                 background-color: #ffffff;
-                border: 1px solid #dcdcdc;
+                border: 1px solid #ced4da;
                 border-radius: 5px;
                 padding: 10px;
                 font-size: 14px;
+                font-family: 'Segoe UI', sans-serif;
             }
             QComboBox {
-                border: 1px solid #dcdcdc;
+                border: 1px solid #ced4da;
                 border-radius: 5px;
                 padding: 5px;
                 font-size: 14px;
+                font-family: 'Segoe UI', sans-serif;
             }
             QPushButton {
-                background-color: #4CAF50;
+                background-color: #007bff;
                 color: white;
                 border: none;
                 border-radius: 5px;
                 padding: 10px;
                 font-size: 14px;
+                font-family: 'Segoe UI', sans-serif;
             }
             QPushButton:hover {
-                background-color: #45a049;
+                background-color: #0056b3;
             }
             QLabel {
                 font-size: 16px;
                 font-weight: bold;
+                font-family: 'Segoe UI', sans-serif;
+                color: #343a40;
             }
         """)
 
@@ -92,7 +99,6 @@ class TextCompressionApp(QWidget):
         print("UI initialized successfully.")
 
     def selectFile(self):
-        
         options = QFileDialog.Options()
         filePath, _ = QFileDialog.getOpenFileName(self, "Select a Text File", "", "Text Files (*.txt);;All Files (*)", options=options)
         if filePath:
@@ -104,7 +110,6 @@ class TextCompressionApp(QWidget):
             print("No file selected.")
 
     def getSaveFileName(self, defaultName):
-        
         options = QFileDialog.Options()
         filePath, _ = QFileDialog.getSaveFileName(self, "Save File", defaultName, "All Files (*)", options=options)
         if filePath:
@@ -114,7 +119,6 @@ class TextCompressionApp(QWidget):
         return defaultName
 
     def compressText(self):
-        
         algorithm = self.algorithmSelector.currentText()
         input_text = self.inputText.toPlainText()
         input_path = getattr(self, 'inputPath', 'input.txt')
