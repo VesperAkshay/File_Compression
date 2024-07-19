@@ -1,61 +1,25 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QComboBox,
-                             QFileDialog)
-from PyQt5.QtGui import QFont, QColor
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QComboBox, QFileDialog, QMenu, QMenuBar)
 from PyQt5.QtCore import Qt
 from huffman.huffman import HuffmanCoding
 from lzw.lzw import compress_file as lzw_compress_file, decompress_file as lzw_decompress_file
 from deflate.deflate import compress_file as deflate_compress_file, decompress_file as deflate_decompress_file
+from themes.themes import defaultStyle, darkStyle, lightStyle, retroStyle, draculaStyle, spaceStyle
 
-class TextCompressionApp(QWidget):
+class TextCompressionApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        print("Initializing UI...")
-        self.setStyleSheet("""
-            QWidget {
-                background-color: #f8f9fa;
-            }
-            QTextEdit {
-                background-color: #ffffff;
-                border: 1px solid #ced4da;
-                border-radius: 5px;
-                padding: 10px;
-                font-size: 14px;
-                font-family: 'Segoe UI', sans-serif;
-            }
-            QComboBox {
-                border: 1px solid #ced4da;
-                border-radius: 5px;
-                padding: 5px;
-                font-size: 14px;
-                font-family: 'Segoe UI', sans-serif;
-            }
-            QPushButton {
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                padding: 10px;
-                font-size: 14px;
-                font-family: 'Segoe UI', sans-serif;
-            }
-            QPushButton:hover {
-                background-color: #0056b3;
-            }
-            QLabel {
-                font-size: 16px;
-                font-weight: bold;
-                font-family: 'Segoe UI', sans-serif;
-                color: #343a40;
-            }
-        """)
+        self.setWindowTitle('Text Compression App')
+        self.resize(600, 400)
+
+        self.centralWidget = QWidget()
+        self.setCentralWidget(self.centralWidget)
 
         self.layout = QVBoxLayout()
-        self.layout.setSpacing(20)
-        self.layout.setContentsMargins(20, 20, 20, 20)
+        self.centralWidget.setLayout(self.layout)
 
         self.inputText = QTextEdit(self)
         self.inputText.setPlaceholderText("Enter or select text to compress...")
@@ -68,7 +32,7 @@ class TextCompressionApp(QWidget):
         self.layout.addWidget(self.algorithmSelector)
 
         self.buttonLayout = QHBoxLayout()
-        self.buttonLayout.setSpacing(10)
+        self.layout.addLayout(self.buttonLayout)
 
         self.selectFileButton = QPushButton('Select File', self)
         self.selectFileButton.clicked.connect(self.selectFile)
@@ -82,8 +46,6 @@ class TextCompressionApp(QWidget):
         self.decompressButton.clicked.connect(self.decompressText)
         self.buttonLayout.addWidget(self.decompressButton)
 
-        self.layout.addLayout(self.buttonLayout)
-
         self.outputLabel = QLabel('Output:', self)
         self.layout.addWidget(self.outputLabel)
 
@@ -92,11 +54,56 @@ class TextCompressionApp(QWidget):
         self.outputText.setPlaceholderText("The result will be shown here...")
         self.layout.addWidget(self.outputText)
 
-        self.setLayout(self.layout)
-        self.setWindowTitle('Text Compression App')
-        self.resize(600, 400)
+        self.createThemeButton()
 
+        self.setStyleSheet(defaultStyle())
         print("UI initialized successfully.")
+
+    def createThemeButton(self):
+        self.themeButton = QPushButton('Themes', self)
+        self.themeButton.setMenu(self.createThemeMenu())
+        self.layout.addWidget(self.themeButton, alignment=Qt.AlignRight)
+
+    def createThemeMenu(self):
+        menu = QMenu(self)
+        
+        defaultThemeAction = menu.addAction("Default")
+        defaultThemeAction.triggered.connect(self.setDefaultTheme)
+        
+        darkThemeAction = menu.addAction("Dark")
+        darkThemeAction.triggered.connect(self.setDarkTheme)
+        
+        lightThemeAction = menu.addAction("Light")
+        lightThemeAction.triggered.connect(self.setLightTheme)
+
+        retroThemeAction = menu.addAction("Retro")
+        retroThemeAction.triggered.connect(self.setRetroTheme)
+
+        draculaThemeAction = menu.addAction("Dracula")
+        draculaThemeAction.triggered.connect(self.setDraculaTheme)
+
+        spaceThemeAction = menu.addAction("Space")
+        spaceThemeAction.triggered.connect(self.setSpaceTheme)
+        
+        return menu
+
+    def setDefaultTheme(self):
+        self.setStyleSheet(defaultStyle())
+
+    def setDarkTheme(self):
+        self.setStyleSheet(darkStyle())
+
+    def setLightTheme(self):
+        self.setStyleSheet(lightStyle())
+
+    def setRetroTheme(self):
+        self.setStyleSheet(retroStyle())
+
+    def setDraculaTheme(self):
+        self.setStyleSheet(draculaStyle())
+
+    def setSpaceTheme(self):
+        self.setStyleSheet(spaceStyle())
 
     def selectFile(self):
         options = QFileDialog.Options()
