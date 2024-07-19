@@ -24,7 +24,7 @@ This is a desktop application for text compression using Huffman, LZW, and Defla
 
 ### Using the Executable (Optional)
 
-1. Download the executable from the [Releases](https://github.com/VesperAkshay/File_Compression/releases/tag/v1.0) page.
+1. Download the executable from the [Releases](https://github.com/VesperAkshay/File_Compression/releases/tag/v1.1.0) page.
 2. Run the executable.
 
 ## Usage
