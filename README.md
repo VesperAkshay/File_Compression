@@ -32,3 +32,6 @@ This is a desktop application for text compression using Huffman, LZW, and Defla
 1. Enter or select text to compress.
 2. Choose the compression algorithm.
 3. Click "Compress" or "Decompress" to perform the action.
+
+## Note
+- Install Fira Coda Font in you Device
