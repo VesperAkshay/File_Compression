@@ -1,5 +1,7 @@
+# huffman/huffman.py
 import heapq
 import os
+import pickle
 
 class BinaryTree:
     def __init__(self, char, frequency, left=None, right=None):
@@ -89,17 +91,23 @@ class HuffmanCoding:
             array.append(int(byte, 2))
         return array
 
-    def compress(self, output_path='compressed_file.bin'):
+    def compress(self):
         print("Compression processing")
-        with open(self.path, 'r+') as file, open(output_path, 'wb') as output:
+        outputPath = 'compressed_file.bin'
+        with open(self.path, 'r+') as file, open(outputPath, 'wb') as output:
             text = file.read().rstrip()
             encodedText = self.__encode(text)
             paddedText = self.__build_padded_text(encodedText)
             bytesArray = self.__build_byte_array(paddedText)
             finalBytes = bytes(bytesArray)
             output.write(finalBytes)
+            
+            # Save the tree structure
+            with open(outputPath + '.tree', 'wb') as tree_file:
+                pickle.dump(self.root, tree_file)
+                
         print('Compressed successfully')
-        return output_path
+        return outputPath
 
     def __remove_padding_from_text(self, text):
         padded_info = text[:8]
@@ -108,7 +116,8 @@ class HuffmanCoding:
         text = text[:-1 * padding_value]
         return text
 
-    def decompress(self, input_path, output_path='decompressed_file.txt'):
+    def decompress(self, input_path):
+        output_path = 'decompressed_file.txt'
         with open(input_path, 'rb') as file, open(output_path, 'w') as output:
             bit_string = ''
             byte = file.read(1)
@@ -118,6 +127,11 @@ class HuffmanCoding:
                 bit_string += bits
                 byte = file.read(1)
             text = self.__remove_padding_from_text(bit_string)
+            
+            # Load the tree structure
+            with open(input_path + '.tree', 'rb') as tree_file:
+                self.root = pickle.load(tree_file)
+            
             actual_text = self.__decode(text, self.root)
             output.write(actual_text)
         print('Decompressed successfully')

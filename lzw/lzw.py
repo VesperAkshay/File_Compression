@@ -1,54 +1,47 @@
-# lzw/lzw.py
 import pickle
 
 DICTIONARY_SIZE = 256
 
-def lzw_compress(input):
+def lzw_compress(input_data):
     global DICTIONARY_SIZE
-    dictionary = {}
+    dictionary = {bytes([i]): i for i in range(DICTIONARY_SIZE)}
     result = []
-    temp = ""
+    temp = b""
 
-    for i in range(0, DICTIONARY_SIZE):
-        dictionary[str(chr(i))] = i
-
-    for c in input:
-        temp2 = temp + str(chr(c))
-        if temp2 in dictionary.keys():
+    for byte in input_data:
+        temp2 = temp + bytes([byte])
+        if temp2 in dictionary:
             temp = temp2
         else:
             result.append(dictionary[temp])
             dictionary[temp2] = DICTIONARY_SIZE
             DICTIONARY_SIZE += 1
-            temp = "" + str(chr(c))
+            temp = bytes([byte])
 
-    if temp != "":
-        result.append(dictionary[temp])  
+    if temp:
+        result.append(dictionary[temp])
         
     return result
 
-def lzw_decompress(input):
+def lzw_decompress(input_data):
     global DICTIONARY_SIZE
-    dictionary = {}
-    result = []
+    dictionary = {i: bytes([i]) for i in range(DICTIONARY_SIZE)}
+    result = bytearray()
 
-    for i in range(0, DICTIONARY_SIZE):
-        dictionary[i] = str(chr(i))
+    previous = bytes([input_data[0]])
+    result.extend(previous)
+    input_data = input_data[1:]
 
-    previous = chr(input[0])
-    input = input[1:]
-    result.append(previous)
-
-    for bit in input:
-        aux = ""
-        if bit in dictionary.keys():
-            aux = dictionary[bit]
+    for code in input_data:
+        if code in dictionary:
+            entry = dictionary[code]
         else:
-            aux = previous + previous[0]
-        result.append(aux)
-        dictionary[DICTIONARY_SIZE] = previous + aux[0]
+            entry = previous + previous[:1]
+        result.extend(entry)
+        dictionary[DICTIONARY_SIZE] = previous + entry[:1]
         DICTIONARY_SIZE += 1
-        previous = aux
+        previous = entry
+    
     return result
 
 def write_compressed_file(path, compressed_data):
@@ -68,6 +61,5 @@ def compress_file(input_path, output_path):
 def decompress_file(input_path, output_path):
     compressed_data = read_compressed_file(input_path)
     decompressed_data = lzw_decompress(compressed_data)
-    with open(output_path, 'w') as output:
-        for data in decompressed_data:
-            output.write(data)
+    with open(output_path, 'wb') as output:
+        output.write(decompressed_data)

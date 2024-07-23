@@ -1,186 +1,104 @@
+# gui_app.py
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QComboBox, QFileDialog, QMenu, QMenuBar, QAction)
+import os
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QComboBox, QMessageBox
+from deflate.deflate import compress_file as deflate_compress, decompress_file as deflate_decompress
 from huffman.huffman import HuffmanCoding
-from lzw.lzw import compress_file as lzw_compress_file, decompress_file as lzw_decompress_file
-from deflate.deflate import compress_file as deflate_compress_file, decompress_file as deflate_decompress_file
-from themes.themes import apply_theme
+from lzw.lzw import compress_file as lzw_compress, decompress_file as lzw_decompress
 
-class TextCompressionApp(QWidget):
+class CompressionApp(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        print("Initializing UI...")
-        self.setStyleSheet("""
-            QWidget {
-                background-color: #f0f0f0;
-            }
-            QTextEdit {
-                background-color: #ffffff;
-                border: 1px solid #dcdcdc;
-                border-radius: 5px;
-                padding: 10px;
-                font-size: 14px;
-            }
-            QComboBox {
-                border: 1px solid #dcdcdc;
-                border-radius: 5px;
-                padding: 5px;
-                font-size: 14px;
-            }
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                padding: 10px;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-            QLabel {
-                font-size: 16px;
-                font-weight: bold;
-            }
-        """)
+        self.setWindowTitle('File Compression and Decompression Tool')
+        self.setGeometry(100, 100, 400, 200)
 
         self.layout = QVBoxLayout()
-        self.layout.setSpacing(20)
-        self.layout.setContentsMargins(20, 20, 20, 20)
 
-        self.menuBar = QMenuBar(self)
-        self.themeMenu = QMenu("Themes", self)
-        self.menuBar.addMenu(self.themeMenu)
+        # File selection
+        self.file_select_layout = QHBoxLayout()
+        self.file_label = QLabel('Selected File: None')
+        self.select_file_btn = QPushButton('Select File')
+        self.select_file_btn.clicked.connect(self.select_file)
+        self.file_select_layout.addWidget(self.file_label)
+        self.file_select_layout.addWidget(self.select_file_btn)
 
-        self.themes = ["Light", "Dark", "Retro", "Space", "Dracula", "Horror", "Innovative"]
-        for theme in self.themes:
-            theme_action = QAction(theme, self)
-            theme_action.triggered.connect(lambda checked, t=theme: self.applyTheme(t))
-            self.themeMenu.addAction(theme_action)
-        self.layout.addWidget(self.menuBar)
+        # Algorithm selection
+        self.algorithm_layout = QHBoxLayout()
+        self.algorithm_label = QLabel('Algorithm:')
+        self.algorithm_combo = QComboBox()
+        self.algorithm_combo.addItems(['deflate', 'huffman', 'lzw'])
+        self.algorithm_layout.addWidget(self.algorithm_label)
+        self.algorithm_layout.addWidget(self.algorithm_combo)
 
-        self.inputText = QTextEdit(self)
-        self.inputText.setPlaceholderText("Enter or select text to compress...")
-        self.layout.addWidget(self.inputText)
+        # Mode selection
+        self.mode_layout = QHBoxLayout()
+        self.compress_btn = QPushButton('Compress')
+        self.decompress_btn = QPushButton('Decompress')
+        self.compress_btn.clicked.connect(lambda: self.process_file('compress'))
+        self.decompress_btn.clicked.connect(lambda: self.process_file('decompress'))
+        self.mode_layout.addWidget(self.compress_btn)
+        self.mode_layout.addWidget(self.decompress_btn)
 
-        self.algorithmSelector = QComboBox(self)
-        self.algorithmSelector.addItem("Huffman")
-        self.algorithmSelector.addItem("LZW")
-        self.algorithmSelector.addItem("Deflate")
-        self.layout.addWidget(self.algorithmSelector)
-
-        self.buttonLayout = QHBoxLayout()
-        self.buttonLayout.setSpacing(10)
-
-        self.selectFileButton = QPushButton('Select File', self)
-        self.selectFileButton.clicked.connect(self.selectFile)
-        self.buttonLayout.addWidget(self.selectFileButton)
-
-        self.compressButton = QPushButton('Compress', self)
-        self.compressButton.clicked.connect(self.compressText)
-        self.buttonLayout.addWidget(self.compressButton)
-
-        self.decompressButton = QPushButton('Decompress', self)
-        self.decompressButton.clicked.connect(self.decompressText)
-        self.buttonLayout.addWidget(self.decompressButton)
-
-        self.layout.addLayout(self.buttonLayout)
-
-        self.outputLabel = QLabel('Output:', self)
-        self.layout.addWidget(self.outputLabel)
-
-        self.outputText = QTextEdit(self)
-        self.outputText.setReadOnly(True)
-        self.outputText.setPlaceholderText("The result will be shown here...")
-        self.layout.addWidget(self.outputText)
+        self.layout.addLayout(self.file_select_layout)
+        self.layout.addLayout(self.algorithm_layout)
+        self.layout.addLayout(self.mode_layout)
 
         self.setLayout(self.layout)
-        self.setWindowTitle('Text Compression App')
-        self.resize(600, 400)
 
-        print("UI initialized successfully.")
-
-    def selectFile(self):
+    def select_file(self):
         options = QFileDialog.Options()
-        filePath, _ = QFileDialog.getOpenFileName(self, "Select a Text File", "", "Text Files (*.txt);;All Files (*)", options=options)
-        if filePath:
-            print(f"File selected: {filePath}")
-            with open(filePath, 'r') as file:
-                self.inputText.setText(file.read())
-            self.inputPath = filePath
-        else:
-            print("No file selected.")
+        file, _ = QFileDialog.getOpenFileName(self, "Select File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        if file:
+            self.file_label.setText(f'Selected File: {os.path.basename(file)}')
+            self.selected_file = file
 
-    def getSaveFileName(self, defaultName):
-        options = QFileDialog.Options()
-        filePath, _ = QFileDialog.getSaveFileName(self, "Save File", defaultName, "All Files (*)", options=options)
-        if filePath:
-            print(f"Save file path: {filePath}")
-            return filePath
-        print(f"Using default save file name: {defaultName}")
-        return defaultName
+    def process_file(self, mode):
+        if not hasattr(self, 'selected_file'):
+            QMessageBox.warning(self, 'Error', 'Please select a file first.')
+            return
+        
+        input_file = self.selected_file
+        file_ext = '.bin' if mode == 'compress' else '.txt'
+        output_file = QFileDialog.getSaveFileName(self, "Save File As", "", f"All Files (*{file_ext})")[0]
+        
+        if not output_file:
+            return
+        
+        if not output_file.endswith(file_ext):
+            output_file += file_ext
+        
+        algorithm = self.algorithm_combo.currentText()
 
-    def compressText(self):
-        algorithm = self.algorithmSelector.currentText()
-        input_text = self.inputText.toPlainText()
-        input_path = getattr(self, 'inputPath', 'input.txt')
-        output_path = self.getSaveFileName('compressed_file.bin')
+        try:
+            if algorithm == 'deflate':
+                if mode == 'compress':
+                    deflate_compress(input_file, output_file)
+                else:
+                    deflate_decompress(input_file, output_file)
+            elif algorithm == 'huffman':
+                huffman = HuffmanCoding(input_file)
+                if mode == 'compress':
+                    output_path = huffman.compress()
+                    os.rename(output_path, output_file)
+                    os.rename(output_path + '.tree', output_file + '.tree')
+                else:
+                    huffman.decompress(input_file)
+                    os.rename('decompressed_file.txt', output_file)
+            elif algorithm == 'lzw':
+                if mode == 'compress':
+                    lzw_compress(input_file, output_file)
+                else:
+                    lzw_decompress(input_file, output_file)
 
-        if not hasattr(self, 'inputPath'):
-            with open(input_path, 'w') as f:
-                f.write(input_text)
+            QMessageBox.information(self, 'Success', f'File {mode}ed successfully and saved to {output_file}')
+        except Exception as e:
+            QMessageBox.critical(self, 'Error', f'An error occurred: {str(e)}')
 
-        if algorithm == 'Huffman':
-            print("Using Huffman algorithm.")
-            huffman = HuffmanCoding(input_path)
-            huffman.compress(output_path)
-        elif algorithm == 'LZW':
-            print("Using LZW algorithm.")
-            lzw_compress_file(input_path, output_path)
-        elif algorithm == 'Deflate':
-            print("Using Deflate algorithm.")
-            deflate_compress_file(input_path, output_path)
-
-        with open(output_path, 'rb') as f:
-            compressed_data = f.read()
-        self.outputText.setText(compressed_data.hex())
-        print("Text compressed successfully.")
-
-    def decompressText(self):
-        print("Decompressing text...")
-        algorithm = self.algorithmSelector.currentText()
-        input_text = self.inputText.toPlainText()
-        input_path = self.getSaveFileName('compressed_file.bin')
-        output_path = self.getSaveFileName('decompressed_file.txt')
-
-        with open(input_path, 'wb') as f:
-            f.write(bytes.fromhex(input_text))
-
-        if algorithm == 'Huffman':
-            print("Using Huffman algorithm.")
-            huffman = HuffmanCoding(input_path)
-            huffman.decompress(input_path, output_path)
-        elif algorithm == 'LZW':
-            print("Using LZW algorithm.")
-            lzw_decompress_file(input_path, output_path)
-        elif algorithm == 'Deflate':
-            print("Using Deflate algorithm.")
-            deflate_decompress_file(input_path, output_path)
-
-        with open(output_path, 'r') as f:
-            decompressed_data = f.read()
-        self.outputText.setText(decompressed_data)
-        print("Text decompressed successfully.")
-
-    def applyTheme(self, theme):
-        apply_theme(self, theme)
-
-if __name__ == '__main__':
-    def main():
-        app = QApplication(sys.argv)
-        ex = TextCompressionApp()
-        ex.show()
-        sys.exit(app.exec_())
-    main()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ex = CompressionApp()
+    ex.show()
+    sys.exit(app.exec_())
