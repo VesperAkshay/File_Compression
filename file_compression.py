@@ -3,7 +3,7 @@ import sys
 import os
 from PyQt5.QtCore import QPropertyAnimation, Qt, QDir
 from PyQt5.QtGui import QColor, QFont, QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QComboBox, QMessageBox, QTreeView, QFileSystemModel, QGraphicsOpacityEffect
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QComboBox, QMessageBox, QGraphicsOpacityEffect
 
 from deflate.deflate import compress_file as deflate_compress, decompress_file as deflate_decompress
 from huffman.huffman import HuffmanCoding
@@ -84,7 +84,7 @@ class CompressionApp(QWidget):
         file_dialog.setOptions(options)
         file_dialog.setFileMode(QFileDialog.ExistingFile)
         file_dialog.setViewMode(QFileDialog.Detail)
-        file_dialog.setDirectory(QDir.rootPath())
+        file_dialog.setDirectory(os.getcwd())  # Set the default directory to the current working directory
         
         if file_dialog.exec_() == QFileDialog.Accepted:
             file = file_dialog.selectedFiles()[0]
