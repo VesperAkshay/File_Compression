@@ -24,12 +24,12 @@ This is a desktop application for text compression using Huffman, LZW, and Defla
 
 ### Using the Executable (Optional)
 
-1. Download the executable from the [Releases](https://github.com/VesperAkshay/File_Compression/releases/tag/v1.1.0) page.
+1. Download the executable from the Releases page.
 2. Run the executable.
 
 ## Usage
 
-1. Enter or select text to compress.
+1. Select the text file to compress.
 2. Choose the compression algorithm.
 3. Click "Compress" or "Decompress" to perform the action.
 
