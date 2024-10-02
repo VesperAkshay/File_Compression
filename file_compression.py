@@ -1,11 +1,8 @@
 import sys
 import os
 from PyQt5.QtCore import QPropertyAnimation, Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
-                             QPushButton, QLabel, QFileDialog, QComboBox, 
-                             QMessageBox, QGraphicsOpacityEffect, QProgressBar, 
-                             QCheckBox)
+from PyQt5.QtGui import QColor, QFont, QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QComboBox, QMessageBox, QGraphicsOpacityEffect, QProgressBar, QCheckBox
 from deflate.deflate import compress_file as deflate_compress, decompress_file as deflate_decompress
 from huffman.huffman import HuffmanCoding
 from lzw.lzw import compress_file as lzw_compress, decompress_file as lzw_decompress
