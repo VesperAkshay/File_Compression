@@ -228,8 +228,9 @@ class CompressionApp(QWidget):
             QMessageBox.critical(self, 'Error', f'An error occurred: {str(e)}')
             self.progress_bar.setValue(0)  # Reset progress bar on error
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon('./icon/icon2.jpeg'))
     ex = CompressionApp()
     ex.show()
     sys.exit(app.exec_())
