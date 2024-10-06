@@ -2,6 +2,7 @@ import pickle
 
 DICTIONARY_SIZE = 256
 
+
 def lzw_compress(input_data):
     global DICTIONARY_SIZE
     dictionary = {bytes([i]): i for i in range(DICTIONARY_SIZE)}
@@ -20,8 +21,9 @@ def lzw_compress(input_data):
 
     if temp:
         result.append(dictionary[temp])
-        
+
     return result
+
 
 def lzw_decompress(input_data):
     global DICTIONARY_SIZE
@@ -41,25 +43,29 @@ def lzw_decompress(input_data):
         dictionary[DICTIONARY_SIZE] = previous + entry[:1]
         DICTIONARY_SIZE += 1
         previous = entry
-    
+
     return result
 
+
 def write_compressed_file(path, compressed_data):
-    with open(path, 'wb') as output:
+    with open(path, "wb") as output:
         pickle.dump(compressed_data, output)
 
+
 def read_compressed_file(path):
-    with open(path, 'rb') as input:
+    with open(path, "rb") as input:
         return pickle.load(input)
 
+
 def compress_file(input_path, output_path):
-    with open(input_path, 'rb') as file:
+    with open(input_path, "rb") as file:
         input_data = file.read()
     compressed_data = lzw_compress(input_data)
     write_compressed_file(output_path, compressed_data)
 
+
 def decompress_file(input_path, output_path):
     compressed_data = read_compressed_file(input_path)
     decompressed_data = lzw_decompress(compressed_data)
-    with open(output_path, 'wb') as output:
+    with open(output_path, "wb") as output:
         output.write(decompressed_data)
