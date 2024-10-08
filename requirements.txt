@@ -1,2 +1,9 @@
 PyQt5
 pyinstaller
+bz2
+io
+PIL
+numpy
+soundfile
+os
+sys
