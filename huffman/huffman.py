@@ -100,12 +100,16 @@ class HuffmanCoding:
             paddedText = self.__build_padded_text(encodedText)
             bytesArray = self.__build_byte_array(paddedText)
             finalBytes = bytes(bytesArray)
+            
+            # Serialize the tree structure
+            tree_bytes = pickle.dumps(self.root)
+            tree_size = len(tree_bytes)
+            
+            # Write tree size as 4 bytes, followed by tree data and compressed data
+            output.write(tree_size.to_bytes(4, byteorder='big'))
+            output.write(tree_bytes)
             output.write(finalBytes)
             
-            # Save the tree structure
-            with open(outputPath + '.tree', 'wb') as tree_file:
-                pickle.dump(self.root, tree_file)
-                
         print('Compressed successfully')
         return outputPath
 
@@ -119,6 +123,15 @@ class HuffmanCoding:
     def decompress(self, input_path):
         output_path = 'decompressed_file.txt'
         with open(input_path, 'rb') as file, open(output_path, 'w') as output:
+            # Read tree size (first 4 bytes)
+            tree_size_bytes = file.read(4)
+            tree_size = int.from_bytes(tree_size_bytes, byteorder='big')
+            
+            # Read and load the tree structure
+            tree_bytes = file.read(tree_size)
+            self.root = pickle.loads(tree_bytes)
+            
+            # Read compressed data
             bit_string = ''
             byte = file.read(1)
             while byte:
@@ -127,10 +140,6 @@ class HuffmanCoding:
                 bit_string += bits
                 byte = file.read(1)
             text = self.__remove_padding_from_text(bit_string)
-            
-            # Load the tree structure
-            with open(input_path + '.tree', 'rb') as tree_file:
-                self.root = pickle.load(tree_file)
             
             actual_text = self.__decode(text, self.root)
             output.write(actual_text)

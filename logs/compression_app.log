@@ -1,0 +1,71 @@
+2025-03-06 23:37:50,804 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:37:50,804 - compression_app - INFO - Temporary directory set up at: D:\File_Compression\temp
+2025-03-06 23:37:50,816 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:37:51,133 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:38:27,154 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:41:52,019 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:41:52,020 - compression_app - INFO - Temporary directory set up at: D:\File_Compression\temp
+2025-03-06 23:41:52,037 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:41:52,365 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:41:58,842 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:43:10,917 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:43:10,918 - root - INFO - Created directory: D:\File_Compression\icons
+2025-03-06 23:43:10,918 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-06 23:43:10,931 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-06 23:43:10,932 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:43:11,265 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:43:34,726 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:48:05,269 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:48:05,269 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-06 23:48:05,283 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-06 23:48:05,284 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:48:05,621 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:48:21,391 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:48:26,396 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:48:26,396 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-06 23:48:26,408 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-06 23:48:26,409 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:48:26,812 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:48:35,884 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:48:51,747 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:48:51,748 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-06 23:48:51,771 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-06 23:48:51,771 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:48:52,164 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:49:00,900 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:52:09,749 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:52:09,749 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-06 23:52:09,761 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-06 23:52:09,761 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:52:10,123 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:52:14,613 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:52:21,830 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:52:21,830 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-06 23:52:21,842 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-06 23:52:21,842 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:52:22,169 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:52:43,680 - compression_app - INFO - Application exiting with code: 0
+2025-03-06 23:59:49,412 - compression_app - INFO - Starting File Compression Application
+2025-03-06 23:59:49,412 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-06 23:59:49,423 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-06 23:59:49,423 - compression_app - INFO - Compression handler initialized
+2025-03-06 23:59:49,854 - compression_app - INFO - UI initialized and shown
+2025-03-06 23:59:55,382 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 00:02:45,332 - compression_app - INFO - Starting File Compression Application
+2025-03-07 00:02:45,333 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 00:02:45,358 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-07 00:02:45,358 - compression_app - INFO - Compression handler initialized
+2025-03-07 00:02:45,892 - compression_app - INFO - UI initialized and shown
+2025-03-07 00:02:53,128 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 00:05:54,328 - compression_app - INFO - Starting File Compression Application
+2025-03-07 00:05:54,328 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 00:05:54,339 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-07 00:05:54,339 - compression_app - INFO - Compression handler initialized
+2025-03-07 00:05:54,743 - compression_app - INFO - UI initialized and shown
+2025-03-07 00:07:41,497 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 00:33:39,457 - compression_app - INFO - Starting File Compression Application
+2025-03-07 00:33:39,457 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 00:33:39,475 - root - WARNING - App icon not found at D:\File_Compression\icons\app_icon.png
+2025-03-07 00:33:39,476 - compression_app - INFO - Compression handler initialized
+2025-03-07 00:33:40,400 - compression_app - INFO - UI initialized and shown
+2025-03-07 00:33:42,066 - compression_app - INFO - Application exiting with code: 0
