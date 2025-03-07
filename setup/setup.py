@@ -13,6 +13,11 @@ build_exe_options = {
         "PyQt5.QtCore", 
         "PyQt5.QtGui",
         "zlib",  # For deflate compression
+        "numpy",
+        "PIL",
+        "soundfile",
+        "io",
+        "bz2",
     ],
     # List all modules that need to be included
     "includes": [
@@ -21,6 +26,10 @@ build_exe_options = {
         "huffman.huffman",
         "lzw.lzw",
         "deflate.deflate",
+        "burrowswheeler.burrowswheeler",
+        "jpeg_2000",
+        "pyflacaudio",
+        "file_compression",
     ],
     # Include all subpackages explicitly
     "include_files": [
@@ -29,8 +38,11 @@ build_exe_options = {
         ("huffman", "huffman"),
         ("lzw", "lzw"),
         ("deflate", "deflate"),
+        ("burrowswheeler", "burrowswheeler"),
+        ("jpeg_2000", "jpeg_2000"),
+        ("pyflacaudio", "pyflacaudio"),
+        ("icons", "icons"),
         # Add additional resource files if needed
-        # ("path/to/icon.ico", "icon.ico"),
     ],
     # Exclude packages not needed in the final build
     "excludes": [
@@ -59,7 +71,7 @@ executables = [
         script="main.py",  # Main entry point script
         base=base,
         target_name="FileCompression.exe",
-        icon=None,  # Add path to your icon if available
+        icon="icons/app_icon.ico" if os.path.exists("icons/app_icon.ico") else None,  # Use app icon if available
         shortcut_name="File Compression",
         shortcut_dir="DesktopFolder",
         copyright="Copyright © 2023",
@@ -70,15 +82,42 @@ setup(
     name="File Compression",
     version="1.0.0",
     description="Advanced file compression utility with multiple algorithms",
-    author="Your Name",
-    author_email="your.email@example.com",
+    long_description="A comprehensive file compression application supporting multiple algorithms including Huffman, LZW, Deflate, Burrows-Wheeler, JPEG 2000, and FLAC audio compression.",
+    author="Akshay Patel",
+    author_email="apexl563@gmail.com",
     options={"build_exe": build_exe_options},
     executables=executables,
+    packages=[
+        "ui",
+        "compression",
+        "huffman",
+        "lzw",
+        "deflate",
+        "burrowswheeler",
+        "jpeg_2000",
+        "pyflacaudio",
+    ],
+    package_data={
+        "": ["*.ico", "*.png", "*.jpg", "*.gif", "*.ui"],
+        "icons": ["*"],
+    },
+    include_package_data=True,
+    # Additional setup options
     # Additional setup options
     requires=[
         'PyQt5',
         'zlib',
+        'numpy',
+        'Pillow',  # PIL's installable name
+        'soundfile',
     ],
+    install_requires=[
+        'PyQt5',
+        'numpy',
+        'Pillow',
+        'soundfile',
+    ],
+    python_requires='>=3.6',
 )
 
 # Notes for building:

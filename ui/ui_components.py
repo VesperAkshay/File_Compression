@@ -1,9 +1,15 @@
 import sys
 import os
 import mimetypes
+import hashlib
 from PyQt5.QtCore import QPropertyAnimation, Qt
 from PyQt5.QtGui import QColor, QFont, QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QComboBox, QMessageBox, QGraphicsOpacityEffect, QProgressBar, QCheckBox
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QComboBox, QMessageBox, QGraphicsOpacityEffect, QProgressBar, QCheckBox, QLineEdit, QInputDialog
+
+# Import for encryption
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import padding
 
 # Import compression modules - these will be used by the compression handler
 from deflate.deflate import compress_file as deflate_compress, decompress_file as deflate_decompress
@@ -13,6 +19,78 @@ from burrowswheeler.burrowswheeler import compress as bw_compress, decompress as
 
 # Import the compression handler
 from compression.compression_handler import CompressionHandler
+
+# Import the Dashboard class from dashboard.py
+from ui.dashboard import Dashboard
+
+class EncryptionHandler:
+    """Class to handle file encryption and decryption using AES"""
+    
+    @staticmethod
+    def derive_key(password, salt=None):
+        """Derive a 256-bit key from the password"""
+        if salt is None:
+            salt = os.urandom(16)
+        # Use PBKDF2 to derive a key from the password
+        key = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000, 32)
+        return key, salt
+    
+    @staticmethod
+    def encrypt_file(input_file, output_file, password):
+        """Encrypt a file using AES-256"""
+        # Read the input file
+        with open(input_file, 'rb') as f:
+            data = f.read()
+        
+        # Derive a key from the password
+        key, salt = EncryptionHandler.derive_key(password)
+        
+        # Generate a random IV
+        iv = os.urandom(16)
+        
+        # Create an encryptor
+        cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+        encryptor = cipher.encryptor()
+        
+        # Pad the data
+        padder = padding.PKCS7(128).padder()
+        padded_data = padder.update(data) + padder.finalize()
+        
+        # Encrypt the data
+        encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
+        
+        # Write the salt, IV, and encrypted data to the output file
+        with open(output_file, 'wb') as f:
+            f.write(salt)
+            f.write(iv)
+            f.write(encrypted_data)
+    
+    @staticmethod
+    def decrypt_file(input_file, output_file, password):
+        """Decrypt a file using AES-256"""
+        # Read the input file
+        with open(input_file, 'rb') as f:
+            salt = f.read(16)
+            iv = f.read(16)
+            encrypted_data = f.read()
+        
+        # Derive the key from the password and salt
+        key, _ = EncryptionHandler.derive_key(password, salt)
+        
+        # Create a decryptor
+        cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+        decryptor = cipher.decryptor()
+        
+        # Decrypt the data
+        padded_data = decryptor.update(encrypted_data) + decryptor.finalize()
+        
+        # Unpad the data
+        unpadder = padding.PKCS7(128).unpadder()
+        data = unpadder.update(padded_data) + unpadder.finalize()
+        
+        # Write the decrypted data to the output file
+        with open(output_file, 'wb') as f:
+            f.write(data)
 
 class AnimatedButton(QPushButton):
     def __init__(self, text, parent=None):
@@ -51,6 +129,7 @@ class CompressionApp(QWidget):
     def __init__(self, compression_handler=None):
         super().__init__()
         self.compression_handler = compression_handler
+        self.file_history = []  # Initialize file history
         self.initUI()
 
     def initUI(self):
@@ -60,6 +139,18 @@ class CompressionApp(QWidget):
 
         self.layout = QVBoxLayout()
         self.setFont(QFont('Fira Code'))
+
+        # Simplified Navigation bar layout
+        self.nav_layout = QHBoxLayout()
+        nav_buttons = ['Dashboard', 'View', 'Tools', 'Options', 'Help']
+        for btn_text in nav_buttons:
+            btn = QPushButton(btn_text)
+            btn.setStyleSheet("font-family: 'Fira Code'; font-size: 14px; color: #333; background-color: #e0e0e0; border: 1px solid #ddd; border-radius: 5px; padding: 5px;")
+            btn.clicked.connect(lambda checked, text=btn_text: self.handle_nav_action(text))
+            self.nav_layout.addWidget(btn)
+
+        # Insert navigation bar at the top of the main layout
+        self.layout.insertLayout(0, self.nav_layout)
 
         # Dark mode toggle with checkbox
         self.dark_mode_toggle = QCheckBox('Enable Dark Mode')
@@ -142,8 +233,14 @@ class CompressionApp(QWidget):
         self.decompress_btn = AnimatedButton('Decompress')
         self.compress_btn.clicked.connect(lambda: self.process_file('compress'))
         self.decompress_btn.clicked.connect(lambda: self.process_file('decompress'))
+        
+        # Add encryption checkbox
+        self.encryption_checkbox = QCheckBox('Enable Encryption')
+        self.encryption_checkbox.setStyleSheet("color: #333;")
+        
         self.mode_layout.addWidget(self.compress_btn)
         self.mode_layout.addWidget(self.decompress_btn)
+        self.mode_layout.addWidget(self.encryption_checkbox)
 
         # Progress bar
         self.progress_bar = QProgressBar(self)
@@ -174,15 +271,21 @@ class CompressionApp(QWidget):
         self.layout.addLayout(self.algorithm_layout)
         self.layout.addLayout(self.mode_layout)
         self.layout.addWidget(self.progress_bar)  # Add progress bar to the main layout
+
+        # Initialize and add the Dashboard widget
+        self.dashboard_widget = Dashboard()
+        self.dashboard_widget.hide()
+        self.layout.addWidget(self.dashboard_widget)
+
         self.setLayout(self.layout)
+
     def select_file(self):
         options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         file_dialog = QFileDialog(self)
         file_dialog.setOptions(options)
         file_dialog.setFileMode(QFileDialog.ExistingFile)
         file_dialog.setViewMode(QFileDialog.Detail)
-        file_dialog.setDirectory(os.getcwd())  # Set the default directory to the current working directory
+        # Do not set a specific directory to open at 'This PC'
         
         if file_dialog.exec_() == QFileDialog.Accepted:
             file = file_dialog.selectedFiles()[0]
@@ -294,6 +397,19 @@ class CompressionApp(QWidget):
                 QProgressBar::text { color: #000000; }
             """)
 
+    def add_to_history(self, file_path, operation):
+        """Add a file operation to the history"""
+        self.file_history.append({'file': file_path, 'operation': operation})
+
+    def show_file_history(self):
+        """Display the file history in a message box"""
+        if not self.file_history:
+            QMessageBox.information(self, 'File History', 'No file history available.')
+            return
+
+        history_text = '\n'.join([f"{entry['operation'].capitalize()}: {entry['file']}" for entry in self.file_history])
+        QMessageBox.information(self, 'File History', history_text)
+
     def process_file(self, mode):
         if not hasattr(self, 'selected_file'):
             QMessageBox.warning(self, 'Error', 'Please select a file first.')
@@ -309,15 +425,52 @@ class CompressionApp(QWidget):
         if not output_file.endswith(file_ext):
             output_file += file_ext
 
+        # Check if encryption is enabled
+        use_encryption = self.encryption_checkbox.isChecked()
+        password = None
+        
+        if use_encryption:
+            # Prompt for password
+            password, ok = QInputDialog.getText(self, 'Password', 'Enter password for encryption:', QLineEdit.Password)
+            if not ok or not password:
+                QMessageBox.warning(self, 'Error', 'Password is required for encryption.')
+                return
+
         algorithm = self.algorithm_combo.currentText()
         self.progress_bar.setValue(0)  # Reset progress bar
 
+        # Disable buttons during processing
+        self.compress_btn.setEnabled(False)
+        self.decompress_btn.setEnabled(False)
+        self.select_file_btn.setEnabled(False)
+
         try:
             if self.compression_handler:
-                # Use the compression handler if it's available
-                self.compression_handler.process(algorithm, mode, input_file, output_file)
+                try:
+                    # Disconnect any existing connections to avoid multiple connections
+                    self.compression_handler.progress_updated.disconnect()
+                    self.compression_handler.operation_completed.disconnect()
+                    self.compression_handler.operation_failed.disconnect()
+                except:
+                    # It's okay if they weren't connected
+                    pass
+                
+                # Connect to the signals with correct names
+                self.compression_handler.progress_updated.connect(self.update_progress)
+                self.compression_handler.operation_completed.connect(self.handle_operation_completed)
+                self.compression_handler.operation_failed.connect(self.handle_operation_failed)
+                
+                # Use the compression handler with threading and encryption if enabled
+                self.compression_handler.process(algorithm, mode, input_file, output_file, 
+                                               use_threading=True, 
+                                               use_encryption=use_encryption, 
+                                               password=password)
             else:
                 # Fall back to direct module calls if no handler is provided
+                # Note: This path doesn't support encryption
+                if use_encryption:
+                    QMessageBox.warning(self, 'Warning', 'Encryption is only supported when using the compression handler.')
+                
                 if algorithm == 'deflate':
                     if mode == 'compress':
                         deflate_compress(input_file, output_file)
@@ -345,10 +498,90 @@ class CompressionApp(QWidget):
                     else:
                         bw_decompress(input_file, output_file)
 
-            self.progress_bar.setValue(100)  # Set progress to 100% after processing
-            QMessageBox.information(self, 'Success', f'File {mode}ed successfully and saved to {output_file}')
+                self.progress_bar.setValue(100)  # Set progress to 100% after processing
+                QMessageBox.information(self, 'Success', f'File {mode}ed successfully and saved to {output_file}')
+                self.add_to_history(input_file, mode)  # Add to history
         
         except Exception as e:
-            QMessageBox.critical(self, 'Error', f'An error occurred: {str(e)}')
-            self.progress_bar.setValue(0)  # Reset progress bar on error
+            self.handle_operation_failed(str(e))
+
+    def update_progress(self, value):
+        """Update the progress bar"""
+        self.progress_bar.setValue(value)
+
+    def handle_operation_completed(self, result):
+        """Handle successful completion of compression/decompression"""
+        self.progress_bar.setValue(100)  # Set progress to 100% after processing
+        
+        # Re-enable buttons
+        self.compress_btn.setEnabled(True)
+        self.decompress_btn.setEnabled(True)
+        self.select_file_btn.setEnabled(True)
+        
+        # Show success message with appropriate information
+        message = 'Operation completed successfully!\n'
+        
+        if 'original_size' in result and 'compressed_size' in result:
+            # This is a compression result
+            message += f'Original size: {self.format_file_size(result["original_size"])}\n'
+            message += f'Compressed size: {self.format_file_size(result["compressed_size"])}\n'
+            if 'ratio' in result:
+                message += f'Compression ratio: {result["ratio"]:.2f}%\n'
+        elif 'compressed_size' in result and 'decompressed_size' in result:
+            # This is a decompression result
+            message += f'Compressed size: {self.format_file_size(result["compressed_size"])}\n'
+            message += f'Decompressed size: {self.format_file_size(result["decompressed_size"])}\n'
+        
+        if 'time' in result:
+            message += f'Time taken: {result["time"]:.2f} seconds'
+        
+        QMessageBox.information(self, 'Success', message)
+
+    def handle_operation_failed(self, error_message):
+        """Handle operation failure"""
+        self.progress_bar.setValue(0)  # Reset progress bar
+        
+        # Re-enable buttons
+        self.compress_btn.setEnabled(True)
+        self.decompress_btn.setEnabled(True)
+        self.select_file_btn.setEnabled(True)
+        
+        # Show error message
+        QMessageBox.critical(self, 'Error', f'An error occurred: {error_message}')
+
+    def handle_nav_action(self, action_name):
+        # Hide all main content widgets
+        self.dashboard_widget.hide()
+        self.category_label.hide()
+        self.category_combo.hide()
+        self.file_icon_label.hide()
+        self.file_label.hide()
+        self.file_type_label.hide()
+        self.file_size_label.hide()
+        self.algorithm_label.hide()
+        self.algorithm_combo.hide()
+        self.compress_btn.hide()
+        self.decompress_btn.hide()
+        self.progress_bar.hide()
+
+        if action_name == 'Dashboard':
+            self.dashboard_widget.show()
+        elif action_name == 'View':
+            self.category_label.show()
+            self.category_combo.show()
+            self.file_icon_label.show()
+            self.file_label.show()
+            self.file_type_label.show()
+            self.file_size_label.show()
+            self.algorithm_label.show()
+            self.algorithm_combo.show()
+            self.compress_btn.show()
+            self.decompress_btn.show()
+            self.progress_bar.show()
+        elif action_name == 'Tools':
+            QMessageBox.information(self, 'Tools', 'Tools options are not yet implemented.')
+        elif action_name == 'Options':
+            QMessageBox.information(self, 'Options', 'Options settings are not yet implemented.')
+        elif action_name == 'Help':
+            QMessageBox.information(self, 'Help', 'Help information is not yet implemented.')
 

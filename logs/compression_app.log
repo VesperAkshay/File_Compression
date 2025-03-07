@@ -69,3 +69,190 @@
 2025-03-07 00:33:39,476 - compression_app - INFO - Compression handler initialized
 2025-03-07 00:33:40,400 - compression_app - INFO - UI initialized and shown
 2025-03-07 00:33:42,066 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 09:32:54,188 - compression_app - INFO - Starting File Compression Application
+2025-03-07 09:32:54,188 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 09:32:54,214 - compression_app - INFO - Compression handler initialized
+2025-03-07 09:32:54,709 - compression_app - INFO - UI initialized and shown
+2025-03-07 09:34:16,398 - compression_app - INFO - Starting File Compression Application
+2025-03-07 09:34:16,399 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 09:34:16,421 - compression_app - INFO - Compression handler initialized
+2025-03-07 09:34:16,888 - compression_app - INFO - UI initialized and shown
+2025-03-07 09:34:25,177 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 11:35:13,369 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:35:13,369 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:35:13,421 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:35:15,030 - compression_app - INFO - UI initialized and shown
+2025-03-07 11:36:38,300 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:36:38,301 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:36:38,320 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:36:39,011 - compression_app - INFO - UI initialized and shown
+2025-03-07 11:40:26,558 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:40:26,559 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:40:26,584 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:40:27,349 - compression_app - INFO - UI initialized and shown
+2025-03-07 11:43:28,809 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 11:51:09,345 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:51:09,345 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:51:09,369 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:51:09,389 - compression_app - ERROR - Error during application startup: type object 'Qt' has no attribute 'QSize'
+Traceback (most recent call last):
+  File "d:\File_Compression\main.py", line 160, in main
+    window = CompressionApp(compression_handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\File_Compression\ui\ui_components.py", line 61, in __init__
+    self.initUI()
+  File "d:\File_Compression\ui\ui_components.py", line 80, in initUI
+    self.toolbar.setIconSize(Qt.QSize(16, 16))
+                             ^^^^^^^^
+AttributeError: type object 'Qt' has no attribute 'QSize'
+2025-03-07 11:51:44,607 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:51:44,608 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:51:44,643 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:51:44,648 - compression_app - ERROR - Error during application startup: type object 'Qt' has no attribute 'QSize'
+Traceback (most recent call last):
+  File "d:\File_Compression\main.py", line 160, in main
+    window = CompressionApp(compression_handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\File_Compression\ui\ui_components.py", line 61, in __init__
+    self.initUI()
+  File "d:\File_Compression\ui\ui_components.py", line 80, in initUI
+    self.toolbar.setIconSize(Qt.QSize(16, 16))
+                             ^^^^^^^^
+AttributeError: type object 'Qt' has no attribute 'QSize'
+2025-03-07 11:53:28,176 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:53:28,179 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:53:28,202 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:53:28,881 - compression_app - INFO - UI initialized and shown
+2025-03-07 11:54:31,853 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 11:56:08,434 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:56:08,434 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:56:08,476 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:56:09,092 - compression_app - INFO - UI initialized and shown
+2025-03-07 11:57:52,723 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 11:57:56,073 - compression_app - INFO - Starting File Compression Application
+2025-03-07 11:57:56,075 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 11:57:56,120 - compression_app - INFO - Compression handler initialized
+2025-03-07 11:57:56,745 - compression_app - INFO - UI initialized and shown
+2025-03-07 11:58:00,093 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:04:29,915 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:04:29,915 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:04:29,942 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:04:30,801 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:06:02,301 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:06:05,007 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:06:05,007 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:06:05,042 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:06:05,712 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:08:36,458 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:08:38,521 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:08:38,522 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:08:38,569 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:08:39,174 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:09:28,060 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:09:31,062 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:09:31,063 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:09:31,113 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:09:31,796 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:09:39,534 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:09:42,060 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:09:42,065 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:09:42,102 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:09:42,830 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:10:57,407 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:11:00,510 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:11:00,511 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:11:00,549 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:11:01,195 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:11:51,222 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:11:53,402 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:11:53,403 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:11:53,435 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:11:54,012 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:12:20,781 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:12:20,782 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:12:20,813 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:12:21,348 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:12:56,982 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:12:56,983 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:12:57,008 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:12:57,767 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:13:56,577 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:13:59,021 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:13:59,021 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:13:59,055 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:13:59,918 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:16:02,687 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:16:05,958 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:16:05,958 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:16:05,994 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:16:06,549 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:16:50,042 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:17:08,649 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:17:08,650 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:17:08,679 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:17:09,406 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:18:16,091 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:18:18,468 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:18:18,469 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:18:18,493 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:18:19,024 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:18:38,742 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:19:54,724 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:19:54,725 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:19:54,769 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:19:55,379 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:21:36,013 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:21:38,204 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:21:38,205 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:21:38,240 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:21:38,936 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:22:57,389 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:22:59,428 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:22:59,428 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:22:59,452 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:23:00,105 - compression_app - INFO - UI initialized and shown
+2025-03-07 12:26:48,914 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 12:26:51,282 - compression_app - INFO - Starting File Compression Application
+2025-03-07 12:26:51,283 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 12:26:51,321 - compression_app - INFO - Compression handler initialized
+2025-03-07 12:26:51,877 - compression_app - INFO - UI initialized and shown
+2025-03-07 13:27:17,785 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 13:31:08,282 - compression_app - INFO - Starting File Compression Application
+2025-03-07 13:31:08,282 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 13:31:08,317 - compression_app - INFO - Compression handler initialized
+2025-03-07 13:31:09,078 - compression_app - INFO - UI initialized and shown
+2025-03-07 13:32:26,450 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 13:32:29,605 - compression_app - INFO - Starting File Compression Application
+2025-03-07 13:32:29,606 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 13:32:29,624 - compression_app - INFO - Compression handler initialized
+2025-03-07 13:32:30,147 - compression_app - INFO - UI initialized and shown
+2025-03-07 13:34:24,097 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 13:34:35,419 - compression_app - INFO - Starting File Compression Application
+2025-03-07 13:34:35,419 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 13:34:35,440 - compression_app - INFO - Compression handler initialized
+2025-03-07 13:34:36,236 - compression_app - INFO - UI initialized and shown
+2025-03-07 13:34:38,142 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 13:34:49,538 - compression_app - INFO - Starting File Compression Application
+2025-03-07 13:34:49,539 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 13:34:49,557 - compression_app - INFO - Compression handler initialized
+2025-03-07 13:34:50,314 - compression_app - INFO - UI initialized and shown
+2025-03-07 13:34:55,655 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 13:36:12,994 - compression_app - INFO - Starting File Compression Application
+2025-03-07 13:36:12,995 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 13:36:13,049 - compression_app - INFO - Compression handler initialized
+2025-03-07 13:36:13,698 - compression_app - INFO - UI initialized and shown
+2025-03-07 13:36:46,589 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 13:59:15,697 - compression_app - INFO - Starting File Compression Application
+2025-03-07 13:59:15,697 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 13:59:15,734 - compression_app - INFO - Compression handler initialized
+2025-03-07 13:59:16,207 - compression_app - INFO - UI initialized and shown
+2025-03-07 13:59:21,582 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 14:04:27,817 - compression_app - INFO - Starting File Compression Application
+2025-03-07 14:04:27,818 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 14:04:27,842 - compression_app - INFO - Compression handler initialized
+2025-03-07 14:04:28,305 - compression_app - INFO - UI initialized and shown
+2025-03-07 14:06:51,061 - compression_app - INFO - Application exiting with code: 0
+2025-03-07 14:08:35,085 - compression_app - INFO - Starting File Compression Application
+2025-03-07 14:08:35,086 - compression_app - INFO - Application directories set up: logs, temp, icons
+2025-03-07 14:08:35,103 - compression_app - INFO - Compression handler initialized
+2025-03-07 14:08:35,524 - compression_app - INFO - UI initialized and shown
