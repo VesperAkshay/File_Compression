@@ -10,3 +10,4 @@ sys
 cryptography
 tabulate
 matplotlib
+Pillow
